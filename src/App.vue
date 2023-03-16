@@ -1,18 +1,21 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <img alt="Vue logo" src="./assets/logo.png" width="40" height="40">
+    <button @click="toggle = !toggle">Toggle Sandbox</button>
+    <sand-box v-if="toggle" />1
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import SandBox from './components/sandbox.vue'
 export default {
   name: 'App',
   components: {
-    HelloWorld
-  }
+    SandBox
+  },
+  data: () => ({
+    toggle: true,
+  }),
 }
 </script>
 
