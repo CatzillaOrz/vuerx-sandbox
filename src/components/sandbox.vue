@@ -1,40 +1,31 @@
 <template>
   <div class="box">
-    <button id="start-btn">Start Timer</button>
-    <h1>{{ time }}</h1>
+    <button id="start-btn" v-stream:click="click$">Start Timer</button>
+    <h1>{{ tick$ || '...' }}</h1>
   </div>
 </template>
 
 <script>
-import { interval, fromEvent } from 'rxjs'
+import { interval, } from 'rxjs'
 import { exhaustMap, map, tap, take } from 'rxjs/operators'
 
 export default {
-  name: 'sandBox',
-  data() {
-    return {
-      time: '...',
-      subscribtion: null
-    }
-  },
-
-  mounted() {
-    const buttonElement = document.querySelector('#start-btn')
-    const click$ = fromEvent(buttonElement, 'click')
-    const tick$ = click$.pipe(
-      exhaustMap(() => interval(1000).pipe(take(10))),
+  domStreams: ['click$'],
+  subscriptions() {
+    const tick$ = this.click$.pipe(
+      exhaustMap(() => interval(1000)),
       map(i => i + 1),
       tap(i => {
         console.log(i)
       }),
     )
-    this.subscribtion = tick$.subscribe(i => {
+    tick$.subscribe(i => {
       this.time = i
     })
-  },
 
+    return { tick$ }
+  },
   destroyed() {
-    this.subscribtion.unsubscribe()
   },
 }
 </script>
