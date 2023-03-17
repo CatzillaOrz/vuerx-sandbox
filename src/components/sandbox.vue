@@ -10,6 +10,7 @@ import { interval, } from 'rxjs'
 import { exhaustMap, map, tap, take } from 'rxjs/operators'
 
 export default {
+  name: 'appSandbox',
   domStreams: ['click$'],
   subscriptions() {
     const tick$ = this.click$.pipe(
@@ -19,10 +20,6 @@ export default {
         console.log(i)
       }),
     )
-    tick$.subscribe(i => {
-      this.time = i
-    })
-
     return { tick$ }
   },
   destroyed() {
